@@ -1,3 +1,6 @@
 torch
 datasets
 pytest
+flake8
+pylint
+black
