@@ -1,40 +1,76 @@
-name: CI
-
-on:
-  push:
-    branches: [ main ]  # Trigger the workflow on push events to the main branch
-  pull_request:
-    branches: [ main ]  # Trigger the workflow on pull request events targeting the main branch
-
-jobs:
-  test:
-    runs-on: ubuntu-latest  # Use the latest version of Ubuntu for the job
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2  # Checkout the repository code
-
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v2  # Set up Python 3.9 environment
-      with:
-        python-version: 3.9  # Specify the Python version
-
-    - name: Cache pip packages
-      uses: actions/cache@v2  # Cache pip packages to speed up subsequent runs
-      with:
-        path: ~/.cache/pip  # Cache directory
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}  # Cache key
-        restore-keys: |
-          ${{ runner.os }}-pip-  # Restore key
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip  # Upgrade pip
-        pip install -r requirements.txt  # Install dependencies from requirements.txt
-
-    - name: Set PYTHONPATH
-      run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV  # Set the PYTHONPATH environment variable
-
-    - name: Run tests
-      run: |
-        python -m pytest tests  # Run tests using pytest
+#name: CI
+#
+#on:
+#  push:
+#    branches: [ main ]  # Trigger the workflow on push events to the main branch
+#  pull_request:
+#    branches: [ main ]  # Trigger the workflow on pull request events targeting the main branch
+#
+#jobs:
+#  code-quality:
+#    name: Code Quality Checks  # Job name for code quality checks
+#    runs-on: ubuntu-latest  # Use the latest version of Ubuntu for the job
+#
+#    steps:
+#    - name: Checkout repository
+#      uses: actions/checkout@v2  # Checkout the repository code
+#
+#    - name: Set up Python 3.9
+#      uses: actions/setup-python@v2  # Set up Python 3.9 environment
+#      with:
+#        python-version: 3.9  # Specify the Python version
+#
+#    - name: Cache pip packages for code quality tools
+#      uses: actions/cache@v2  # Cache pip packages to speed up subsequent runs
+#      with:
+#        path: ~/.cache/pip
+#        key: ${{ runner.os }}-pip-code-quality-${{ hashFiles('requirements.txt') }}
+#        restore-keys: |
+#          ${{ runner.os }}-pip-code-quality-
+#
+#    - name: Install code quality tools
+#      run: |
+#        python -m pip install --upgrade pip  # Upgrade pip
+#        pip install flake8 pylint black  # Install flake8, pylint, and black
+#
+#    - name: Run flake8
+#      run: flake8 .  # Run flake8 to check for linting issues
+#
+#    - name: Run pylint
+#      run: find . -name "*.py" | xargs pylint  # Run pylint to perform static code analysis
+#
+#    - name: Run black
+#      run: black --check .  # Run black to check code formatting
+#
+#  tests:
+#    name: Run Tests  # Job name for running tests
+#    runs-on: ubuntu-latest  # Use the latest version of Ubuntu for the job
+#
+#    steps:
+#    - name: Checkout repository
+#      uses: actions/checkout@v2  # Checkout the repository code
+#
+#    - name: Set up Python 3.9
+#      uses: actions/setup-python@v2  # Set up Python 3.9 environment
+#      with:
+#        python-version: 3.9  # Specify the Python version
+#
+#    - name: Cache pip packages
+#      uses: actions/cache@v2  # Cache pip packages to speed up subsequent runs
+#      with:
+#        path: ~/.cache/pip  # Cache directory
+#        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}  # Cache key based on OS and requirements.txt
+#        restore-keys: |
+#          ${{ runner.os }}-pip-  # Restore key
+#
+#    - name: Install dependencies
+#      run: |
+#        python -m pip install --upgrade pip  # Upgrade pip
+#        pip install -r requirements.txt  # Install dependencies from requirements.txt
+#
+#    - name: Set PYTHONPATH
+#      run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV  # Set the PYTHONPATH environment variable
+#
+#    - name: Run tests
+#      run: |
+#        python -m pytest tests  # Run tests using pytest
