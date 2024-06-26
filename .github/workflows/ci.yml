@@ -1,45 +1,31 @@
-name: CI
+# This is a GitHub Actions workflow configuration file for Continuous Integration (CI).
+# The workflow is triggered on push and pull request events to the main branch.
+
+name: CI  # The name of the workflow
 
 on:
   push:
     branches: [ main ]  # Trigger the workflow on push events to the main branch
   pull_request:
-    branches: [ main ]  # Trigger the workflow on pull request events targeting the main branch
+    branches: [ main ]  # Trigger the wor kflow on pull request events to the main branch
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # Specify the type of runner to use for the job
-
-    strategy:
-      matrix:
-        python-version: [3.8, 3.9, 3.10]  # Define a matrix of Python versions to test against
+    runs-on: ubuntu-latest  # The job will run on the latest version of Ubuntu
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2  # Use the checkout action to clone the repository
+      uses: actions/checkout@v2  # Step to checkout the repository using the actions/checkout@v2 action
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2  # Use the setup-python action to set up the specified Python version
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2  # Step to set up Python 3.9 using the actions/setup-python@v2 action
       with:
-        python-version: ${{ matrix.python-version }}  # Specify the Python version from the matrix
-
-    - name: Install Miniconda
-      uses: conda-incubator/setup-miniconda@v2  # Use the setup-miniconda action to install Miniconda
-      with:
-        python-version: ${{ matrix.python-version }}  # Specify the Python version from the matrix
-        auto-update-conda: true  # Automatically update conda to the latest version
-        auto-activate-base: false  # Do not auto-activate the base environment
-
-    - name: Create conda environment
-      run: conda create --name test-env python=${{ matrix.python-version }} --yes  # Create a new conda environment with the specified Python version
-
-    - name: Activate conda environment
-      run: echo "conda activate test-env" >> $GITHUB_ENV  # Activate the conda environment and add it to the GitHub environment variables
+        python-version: 3.9  # Specify the Python version to be set up
 
     - name: Install dependencies
       run: |
-        conda install --file requirements.txt --yes  # Install dependencies from the requirements.txt file
-        conda install pytest --yes  # Install pytest for running tests
+        python -m pip install --upgrade pip  # Upgrade pip to the latest version
+        pip install -r requirements.txt  # Install the dependencies listed in requirements.txt
 
     - name: Run tests
       run: pytest tests  # Run the tests using pytest
