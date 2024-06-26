@@ -51,6 +51,21 @@ def get_dataset(file_path, dataset_name='wmt14', config_name='de-en', split='tra
 
     return data['translation']
 
+def pad_sequences(sequences, pad_token=0):
+    """
+    Pad sequences to the same length with the given pad token.
+
+    Parameters:
+    sequences (list): List of sequences to be padded.
+    pad_token (int, optional): The token to use for padding. Default is 0.
+
+    Returns:
+    list: List of padded sequences.
+    """
+    max_length = max(len(seq) for seq in sequences)
+    padded_sequences = [seq + [pad_token] * (max_length - len(seq)) for seq in sequences]
+    return padded_sequences
+
 if __name__ == "__main__":
     # Define the path to the dataset file
     data_path = os.path.join(os.path.dirname(__file__), '../data/small_wmt14_en_de.json')
