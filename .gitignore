@@ -163,4 +163,4 @@ cython_debug/
 .ipynb_checkpoints/
 .DS_Store
 .pytest_cache/
-
+data/
