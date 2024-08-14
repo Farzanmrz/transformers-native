@@ -4,7 +4,7 @@ import torch.nn as nn
 from classes.AttentionHead import AttentionHead
 
 
-class MultiHeadAttentionLayer(nn.Module):
+class MultiHeadAttention(nn.Module):
     """
     Implements multi-headed attention mechanism for a Transformer model.
 
